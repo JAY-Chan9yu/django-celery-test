@@ -87,6 +87,7 @@ DATABASES = {
 
 BROKER_URL = "amqp://root:root@127.0.0.1:5672"
 BROKER_MAIL_URL = "amqp://root:root@127.0.0.1:5672/mail"
+BROKER_BATCH_URL = "amqp://root:root@127.0.0.1:5672/batches"
 
 
 # Password validation
