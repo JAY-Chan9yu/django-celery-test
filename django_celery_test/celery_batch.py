@@ -19,6 +19,7 @@ app.config_from_object('django.conf:settings')
 # worker prefetch 2로 설정
 worker_prefetch_multiplier = 2
 
+# https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html#crontab-schedules
 app.conf.beat_schedule = {
     # 제품 크롤링
     'product_crawling_worker': {
@@ -37,7 +38,7 @@ app.conf.beat_schedule = {
     # api check
     'check_api': {
         'task': 'batches.tasks.check_api',
-        'schedule': crontab(minute="*"),
+        'schedule': 1,  # 1초마다 실행
         'options': {},
         'args': ()
     },
