@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
+
     'apps.posts'
 ]
 
@@ -82,6 +84,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+BROKER_URL = "amqp://root:root@127.0.0.1:5672"
+BROKER_MAIL_URL = "amqp://root:root@127.0.0.1:5672/mail"
 
 
 # Password validation
