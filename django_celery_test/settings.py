@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -89,6 +89,11 @@ BROKER_URL = "amqp://root:root@127.0.0.1:5672"
 BROKER_MAIL_URL = "amqp://root:root@127.0.0.1:5672/mail"
 BROKER_BATCH_URL = "amqp://root:root@127.0.0.1:5672/batches"
 
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
+
+REDIS_HOST = "127.0.0.1"
+REDIS_PORT = "63791"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
