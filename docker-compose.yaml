@@ -4,17 +4,32 @@ networks:
     driver: bridge
 
 services:
-  rabbit1:
+  rabbitmq:
     image: rabbitmq:3.8-management
-    container_name: rabbit1
+    container_name: celery-test-rabbit
     hostname: rabbit1
     # restart: always
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5673:5672"
+      - "15673:15672"
     environment:
       - RABBITMQ_DEFAULT_USER=root
       - RABBITMQ_DEFAULT_PASS=root
       - RABBITMQ_DEFAULT_VHOST=default
     networks:
       - app-tier
+
+  celery:
+    build: ./
+    container_name: celery-worker-test
+    volumes:
+      - ./celeryd:/etc/default/celeryd
+#      - ./generic_celeryd:/etc/init.d/celeryd
+    tty: true
+    stdin_open: true
+    command: # https://binux.tistory.com/76
+      - sh
+      - -c
+      - |
+        sudo /etc/init.d/celeryd start
+        /bin/bash
