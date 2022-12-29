@@ -6,7 +6,7 @@ from utils.redis_client import get_redis_client
 
 
 @app.task(bind=True, acks_late=True, autoretry_for=(ZeroDivisionError,), default_retry_delay=10, max_retries=2)
-def send_post_created_alert(self, post_id: int):
+def send_post_created_alert_sqs(self, post_id: int):
     """
     post 생성 알림을 보낸다
     1. 메시지 유실에 대한 방어처리, worker에서 메시지를 가져온 후 정말 완료 처리 되었다고 오토 커밋
@@ -28,9 +28,8 @@ def send_post_created_alert(self, post_id: int):
 
 
 @app.task(acks_late=True)
-def send_post_read_alert(post_id: int):
+def send_post_read_alert_sqs(post_id: int):
     """
     누가 내 post를 읽었을 때마다 알림을 보낸다
     """
     print(f"{post_id}번 포스트를 누가 읽었습니다.")
-    time.sleep(2)

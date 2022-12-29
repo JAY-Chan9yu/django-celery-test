@@ -1,7 +1,7 @@
-CELERYD_NODES="worker1"
+CELERYD_NODES="worker2"
 
 CELERY_BIN="/usr/local/bin/celery"  # celery 설치된 경로에 맞게 설정
-CELERY_APP="django_celery_test"
+CELERY_APP="django_celery_test.celery_sqs"
 
 CELERYD_OPTS="--time-limit=300 --concurrency=2"  # concurrency는 cpu 개수에 맞게 설정
 
@@ -10,7 +10,7 @@ CELERYD_PID_FILE="/var/run/celery/%n.pid"
 
 CELERYD_LOG_LEVEL="INFO"
 
-CELERY_CONFIG_MODULE="django_celery_test.celery"
+CELERY_CONFIG_MODULE="django_celery_test.celery_sqs"
 
 CELERYD_USER="root"
 CELERYD_GROUP="root"

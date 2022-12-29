@@ -19,17 +19,62 @@ services:
     networks:
       - app-tier
 
+  api:
+    build: ./
+    container_name: celery-test-api
+    volumes:
+      - ./:/usr/src/app
+    tty: true
+    stdin_open: true
+    ports:
+      - "8000:8000"
+    command: # https://binux.tistory.com/76
+      - sh
+      - -c
+      - |
+        pip install -r requirements.txt
+        ./manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-tier
+
   celery:
     build: ./
-    container_name: celery-worker-test
+    container_name: celery-worker-rabbitmq
     volumes:
+      - ./:/usr/src/app
       - ./celeryd:/etc/default/celeryd
-#      - ./generic_celeryd:/etc/init.d/celeryd
     tty: true
     stdin_open: true
     command: # https://binux.tistory.com/76
       - sh
       - -c
       - |
+        pip install -r requirements.txt
+        sudo ./init_script.sh
         sudo /etc/init.d/celeryd start
         /bin/bash
+    networks:
+      - app-tier
+    depends_on:
+      - rabbitmq
+
+  celery_sqs:
+    build: ./
+    container_name: celery-worker-sqs
+    volumes:
+      - ./:/usr/src/app
+      - ./celeryd_sqs:/etc/default/celeryd
+    tty: true
+    stdin_open: true
+    command: # https://binux.tistory.com/76
+      - sh
+      - -c
+      - |
+        pip install -r requirements.txt
+        sudo ./init_script.sh
+        sudo /etc/init.d/celeryd start
+        /bin/bash
+    networks:
+      - app-tier
