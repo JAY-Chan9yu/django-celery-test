@@ -10,8 +10,7 @@ WORKDIR /usr/src/app
 RUN python -m pip install --no-cache-dir --upgrade pip && \
     python -m pip uninstall pycurl && \
     python -m pip install pycurl --compile --global-option="--with-openssl" --no-cache-dir && \
-#    python -m pip install -r requirements.txt && \
-    apt update && apt install -y sudo
+    apt update && install -y sudo && apt install -y systemd && apt install -y vim
 
 
 EXPOSE 8000

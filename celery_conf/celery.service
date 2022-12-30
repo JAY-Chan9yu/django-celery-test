@@ -1,0 +1,32 @@
+[Unit]
+Description=Celery Service
+After=network.target
+
+[Service]
+# https://fmd1225.tistory.com/93
+# forking: 자식 프로세스를 생성이 완료되는 단계까지를 systemd 가 시작이 완료되었다고 판단하게 된다.
+#          부모 프로세스를 추적할 수 있도록 PIDFile= 필드에 PID 파일을 선언해 주어야 한다.
+Type=forking
+User=root
+Group=root
+
+# Celery의 설정파일 경로
+EnvironmentFile=/usr/src/app/celery_conf/celery
+
+# 실행될 디렉터리 - app 프로젝트의 경로를 적어주면 된다
+WorkingDirectory=/usr/src/app
+
+# 실제 구동할때 입력되는 명령어이다
+# 이전에 생성했던 conf 파일의 설정을 통해 괄호 안에 값이 들어가게 된다
+ExecStart=/bin/sh -c '${CELERY_BIN} -A $CELERY_APP multi start $CELERYD_NODES \
+    --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} \
+    --loglevel="${CELERYD_LOG_LEVEL}" $CELERYD_OPTS'
+ExecStop=/bin/sh -c '${CELERY_BIN} multi stopwait $CELERYD_NODES \
+    --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} d\
+    --loglevel="${CELERYD_LOG_LEVEL}"'
+ExecReload=/bin/sh -c '${CELERY_BIN} -A $CELERY_APP multi restart $CELERYD_NODES \
+    --pidfile=${CELERYD_PID_FILE} --logfile=${CELERYD_LOG_FILE} \
+    --loglevel="${CELERYD_LOG_LEVEL}" $CELERYD_OPTS'
+
+[Install]
+WantedBy=multi-user.target
