@@ -45,9 +45,10 @@ services:
     volumes:
       - ./:/usr/src/app
       - ./celeryd:/etc/default/celeryd
+    privileged: true
     tty: true
     stdin_open: true
-    command: # https://binux.tistory.com/76
+    command:
       - sh
       - -c
       - |
@@ -66,9 +67,10 @@ services:
     volumes:
       - ./:/usr/src/app
       - ./celeryd_sqs:/etc/default/celeryd
+    privileged: true
     tty: true
     stdin_open: true
-    command: # https://binux.tistory.com/76
+    command:
       - sh
       - -c
       - |
